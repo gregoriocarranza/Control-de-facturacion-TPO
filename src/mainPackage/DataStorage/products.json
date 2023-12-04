@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "nombre": "Producto 1",
+    "tipoDeUnidad": "PESO",
+    "precio": 150.0,
+    "tipoDeIVA": "IVA_21",
+    "rubro": {
+      "id": 1,
+      "nombre": "Electrónica",
+      "descripcion": "Artículos electrónicos y accesorios"
+    }
+  },
+  {
+    "id": 2,
+    "nombre": "Producto 2",
+    "tipoDeUnidad": "UNIDAD",
+    "precio": 300.0,
+    "tipoDeIVA": "IVA_10_5",
+    "rubro": {
+      "id": 2,
+      "nombre": "Alimentos",
+      "descripcion": "Productos alimenticios de todo tipo"
+    }
+  }
+]
