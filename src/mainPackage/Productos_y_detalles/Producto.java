@@ -65,7 +65,10 @@ public class Producto  {
         this.tipoDeIVA = tipoDeIVA;
     }
 
-    public RubroDTO getRubro() {
+    public Rubro getRubro() {
+        return rubro;
+    }
+    public RubroDTO getRubroDTO() {
         return new RubroDTO(rubro);
     }
 

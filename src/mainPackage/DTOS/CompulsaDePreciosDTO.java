@@ -16,7 +16,17 @@ public class CompulsaDePreciosDTO {
         this.nombreDeProducto = producto.getNombre();
         this.precioDeProducto = producto.getPrecio();
     }
+    public String getNombreDeProveedor() {
+        return nombreDeProveedor;
+    }
 
+    public String getNombreDeProducto() {
+        return nombreDeProducto;
+    }
+
+    public float getPrecioDeProducto() {
+        return precioDeProducto;
+    }
     public String toString() {
         return "{"+"id=" + id +
                 ", nombreDeProveedor='" + nombreDeProveedor + '\'' +

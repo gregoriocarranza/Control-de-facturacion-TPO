@@ -6,6 +6,7 @@ import mainPackage.Enum.TipoDeIva;
 import mainPackage.Enum.TipoDeUnidad;
 import mainPackage.Productos_y_detalles.Producto;
 import mainPackage.Productos_y_detalles.Rubro;
+import mainPackage.UI.MainMenu;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -20,12 +21,14 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         System.out.println("Iniciando programa......");
+        MainMenu mainMenu = MainMenu.getInstance();
+
         Controller controller = Controller.getInstance();
 //      System.out.println(controller.ordenesDePagoEmitidas(LocalDate.now().minusDays(1)));
 //      System.out.println("\n");
 //      System.out.println(controller.calcularCompulsaDePrecios("Vacunas"));
 //      System.out.println("\n");
-//      System.out.println(controller.facturasNoPagas(LocalDate.now().minusDays(1),192837465));
+//      System.out.println(controller.FacturasNoPagas(LocalDate.now().minusDays(1),192837465));
 //      System.out.println("\n");
 //      System.out.println(controller.FacturasEmitidasPorDiaYProveedor(LocalDate.now().minusDays(1),192837465));
 

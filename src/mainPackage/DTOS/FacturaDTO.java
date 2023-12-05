@@ -12,17 +12,35 @@ public class FacturaDTO {
     private String razonSocial;
     private String cuentaCorriente;
     private LocalDate fechaDeEmision;
-
-    private LocalDate fechaVencimiento;
     private int cuit;
 
     public FacturaDTO(int id, Factura factura, Proveedor proveedor) {
         this.id = id;
         this.fechaDeEmision = factura.getFechaDeEmision();
+        this.cuit=proveedor.getCuit();
+        this.cuentaCorriente = factura.getCuentaCorriente();
         this.razonSocial = factura.getRazonSocial();
         this.importeTotal = factura.getImporteTotal();
-        this.cuentaCorriente = factura.getCuentaCorriente();
-        this.cuit=proveedor.getCuit();
+
+    }
+    public float getImporteTotal() {
+        return importeTotal;
+    }
+
+    public String getRazonSocial() {
+        return razonSocial;
+    }
+
+    public String getCuentaCorriente() {
+        return cuentaCorriente;
+    }
+
+    public LocalDate getFechaDeEmision() {
+        return fechaDeEmision;
+    }
+
+    public int getCuit() {
+        return cuit;
     }
 
     @Override
@@ -33,7 +51,6 @@ public class FacturaDTO {
                 ", fechaDeEmision=" + (fechaDeEmision != null ? fechaDeEmision.toString() : "null") +
                 ", importeTotal=" + importeTotal +
                 ", cuentaCorriente='" + cuentaCorriente + '\'' +
-                ", fechaVencimiento=" + (fechaVencimiento != null ? fechaVencimiento.toString() : "null") +
                 ", cuit=" + cuit +
                 "}";
     }

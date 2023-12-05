@@ -21,7 +21,7 @@ public class ProductoDTO {
         this.tipoDeUnidad = producto.getTipoDeUnidad();
         this.precio = producto.getPrecio();
         this.tipoDeIVA = producto.getTipoDeIVA();
-        this.rubro = producto.getRubro() ;
+        this.rubro = producto.getRubroDTO() ;
     }
 
     public String toString() {

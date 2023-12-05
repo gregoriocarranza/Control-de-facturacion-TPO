@@ -12,6 +12,7 @@ import mainPackage.FormasDePago.Efectivo;
 import mainPackage.Productos_y_detalles.Producto;
 import mainPackage.Productos_y_detalles.Rubro;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,9 +42,9 @@ public class Controller {
         return INSTANCE;
     }
 
-    public Collection<CompulsaDePreciosDTO> calcularCompulsaDePrecios(String productName){
+    public List<CompulsaDePreciosDTO> calcularCompulsaDePrecios(String productName){
         Collection<Proveedor> proveedores = getAllProveedores();
-        Collection<CompulsaDePreciosDTO> compulsaDePreciosDTOS = new ArrayList<>();
+        List<CompulsaDePreciosDTO> compulsaDePreciosDTOS = new ArrayList<>();
         for (Proveedor proveedor:proveedores){
             for (Producto producto:proveedor.getProductos()){
                 if (producto.getNombre().equals(productName)){
@@ -53,19 +54,19 @@ public class Controller {
         }
         return compulsaDePreciosDTOS;
     }
-    public Collection<OrdenDePagoDTO> ordenesDePagoEmitidas(LocalDate fecha){
+    public List<OrdenDePago> ordenesDePagoEmitidas(LocalDate fecha){
         Collection<OrdenDePago> ordenesDePago = getAllOrdenesDePago();
-        Collection<OrdenDePagoDTO> ordenDePagoDTO = new ArrayList<>();
+        List<OrdenDePago> ordenDePagoDTO = new ArrayList<>();
         for (OrdenDePago ordenDePago:ordenesDePago){
             if(ordenDePago.getFechaDeEmision().equals(fecha)){
-                ordenDePagoDTO.add(new OrdenDePagoDTO(ordenDePagoDTO.size(),ordenDePago));
+                ordenDePagoDTO.add(ordenDePago);
             }
         }
         return ordenDePagoDTO;
     }
-    public Collection<FacturaDTO> FacturasEmitidasPorDiaYProveedor(LocalDate fecha, int cuit){
+    public List<FacturaDTO> FacturasEmitidasPorDiaYProveedor(LocalDate fecha, int cuit){
         Collection<Proveedor> proveedores =getAllProveedores();
-        Collection<FacturaDTO> facturasEmitidas = new ArrayList<>();
+        List<FacturaDTO> facturasEmitidas = new ArrayList<>();
 
         for (Proveedor proveedor:proveedores){
             if (proveedor.getCuit()==cuit){
@@ -79,12 +80,10 @@ public class Controller {
         return facturasEmitidas;
     }
 
-    public Collection<FacturaDTO> facturasNoPagas(LocalDate fecha,int cuit){
+    public List<FacturaDTO> FacturasNoPagas(LocalDate fecha,int cuit){
         Collection<OrdenDePago> ordenesDePago = getAllOrdenesDePago();
-
-
         Collection<Factura> facturasPagadas = new ArrayList<>();
-        Collection<FacturaDTO> facturasImpagas = new ArrayList<>();
+        List<FacturaDTO> facturasImpagas = new ArrayList<>();
         Proveedor proveedorEncontrado = null;
 
         for (Proveedor proveedor:proveedores){
@@ -103,7 +102,11 @@ public class Controller {
         if (proveedorEncontrado!=null){
             for (Factura factura : proveedorEncontrado.getFacturas()) {
                 if (!facturasPagadas.contains(factura)) {
-                    facturasImpagas.add(new FacturaDTO(facturasImpagas.size(),factura,proveedorEncontrado));
+                    if(factura.getFechaDeEmision().equals(fecha)){
+                        facturasImpagas.add(new FacturaDTO(facturasImpagas.size(),factura,proveedorEncontrado));
+                    }
+
+
                 }
             }
         }
@@ -118,6 +121,66 @@ public class Controller {
     public List<OrdenDePago> getAllOrdenesDePago()   {
         return ordenesDePago;
     }
+
+    public List<Rubro> getAllRubros()   {
+        rubros = new ArrayList<>();
+        for (Producto producto:productos){
+            if(!rubros.contains(producto.getRubro())){
+                rubros.add(producto.getRubro());
+            }
+        }
+        return rubros;
+    }
+    public Boolean createFactura(LocalDate emision,float total,String CC,int cuit,String razonSocial,String name,String direc,int telf,String mail,float ingresosBrutos){
+        Collection<Proveedor> proveedores =getAllProveedores();
+        Proveedor proveedorEncontrado = null;
+        for (Proveedor proveedor:proveedores){
+            if (proveedor.getCuentaCorriente().contains(CC)) {
+                proveedorEncontrado=proveedor;
+            }
+        }
+        if (proveedorEncontrado!=null){
+            Factura factura=new Factura(facturas.size(), emision, total, CC, cuit, razonSocial, name, direc, telf, mail, ingresosBrutos,proveedorEncontrado.getInicioDeActividades());
+            facturas.add(factura);
+            proveedorEncontrado.addFactura(factura);
+            return true;
+        }
+        return false;
+    }
+
+    public Boolean createProveedor(String name, int cuit, String categoriaFiscal, String CC,LocalDate inicioDeActividades) throws Exception {
+        Collection<Proveedor> proveedores =getAllProveedores();
+        Proveedor proveedorEncontrado = null;
+        for (Proveedor proveedor:proveedores){
+            if (proveedor.getCuentaCorriente().contains(CC)) {
+                proveedorEncontrado=proveedor;
+            }
+        }
+        if (proveedorEncontrado==null){
+            Proveedor proveedor= new Proveedor(proveedores.size(),name,cuit, categoriaFiscal, List.of(new String[]{CC}),List.of(),inicioDeActividades);
+            proveedores.add(proveedor);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean createProducto(String nombre, TipoDeUnidad tipoDeUnidad, float precio, TipoDeIva tipoDeIVA, Rubro rubro, String CC) throws IOException {
+        Collection<Proveedor> proveedores =getAllProveedores();
+        Proveedor proveedorEncontrado = null;
+        for (Proveedor proveedor:proveedores){
+            if (proveedor.getCuentaCorriente().contains(CC)) {
+                proveedorEncontrado=proveedor;
+            }
+        }
+        if (proveedorEncontrado!=null){
+            Producto producto= new Producto(productos.size(),nombre,tipoDeUnidad, precio, tipoDeIVA,rubro);
+            productos.add(producto);
+            proveedorEncontrado.addProducto(producto);
+            return true;
+        }
+        return false;
+    }
+
     public static List<Rubro> initRubros() throws Exception {
         rubros = new ArrayList<>();
         rubros.add(new Rubro(rubros.size(),"Salud", "Insumos para la salud"));
@@ -135,9 +198,20 @@ public class Controller {
     }
     public static List<Proveedor> initProveedores() throws Exception {
         proveedores = new ArrayList<>();
-        proveedores.add(new Proveedor(proveedores.size(),"Hospital italiano",987654321, "?", List.of(new String[]{"a4c257ae-84e3-49d6-ab6b-376b4c2bc334"}),  List.of(productos.get(1))));
-        proveedores.add(new Proveedor(proveedores.size(),"Policia Federal",123456789, "?", List.of(new String[]{"042b8867-0d65-492d-ac0d-962b88060ee9"}),  List.of(productos.get(3), productos.get(2))));
-        proveedores.add(new Proveedor(proveedores.size(),"VaulTech",192837465, "?", List.of(new String[]{"74d0d951-6960-49b9-ac48-5e452766ad46", "fb471140-d155-4e64-b05f-7b888a83a374"}),  List.of(productos.get(0))));
+
+        List<Producto> productos1 = new ArrayList<>();
+        productos1.add(productos.get(1));
+
+        List<Producto> productos2 = new ArrayList<>();
+        productos2.add(productos.get(2));
+        productos2.add(productos.get(3));
+
+        List<Producto> productos3 = new ArrayList<>();
+        productos3.add(productos.get(0));
+
+        proveedores.add(new Proveedor(proveedores.size(),"Hospital italiano",987654321, "?", List.of(new String[]{"a4c257ae-84e3-49d6-ab6b-376b4c2bc334"}),productos1,LocalDate.now().minusMonths(2)));
+        proveedores.add(new Proveedor(proveedores.size(),"Policia Federal",123456789, "?", List.of(new String[]{"042b8867-0d65-492d-ac0d-962b88060ee9"}),productos2,LocalDate.now().minusMonths(1)));
+        proveedores.add(new Proveedor(proveedores.size(),"VaulTech",192837465, "?", List.of(new String[]{"74d0d951-6960-49b9-ac48-5e452766ad46", "fb471140-d155-4e64-b05f-7b888a83a374"}), productos3,LocalDate.now()));
         return proveedores;
     }
     public static List<OrdenDePago> initOrdenesDePago() throws Exception {
@@ -150,7 +224,7 @@ public class Controller {
         Efectivo nuevoEfectivo1 = new Efectivo(1500.0f,"Dolars");
         listaCheques.add(nuevoCheque2);
         ordenesDePago.add(new OrdenDePago(ordenesDePago.size(),LocalDate.now(),1000.0f,"a4c257ae-84e3-49d6-ab6b-376b4c2bc334",nuevoEfectivo1,listaCheques, LocalDate.now().plusDays(2),true,new ArrayList<>()));
-        ordenesDePago.add(new OrdenDePago(ordenesDePago.size(),LocalDate.now(),1000.0f,"74d0d951-6960-49b9-ac48-5e452766ad46",nuevoEfectivo1,null, LocalDate.now().plusDays(4),false,new ArrayList<>()));
+        ordenesDePago.add(new OrdenDePago(ordenesDePago.size(),LocalDate.now(),1000.0f,"74d0d951-6960-49b9-ac48-5e452766ad46",nuevoEfectivo1,new ArrayList<>(), LocalDate.now().plusDays(4),false,new ArrayList<>()));
 
         return ordenesDePago;
     }
@@ -172,6 +246,10 @@ public class Controller {
         }
         ordenesDePago.get(0).getFacturas().add(facturas.get(0));
         ordenesDePago.get(1).getFacturas().add(facturas.get(1));
+        ordenesDePago.get(1).getFacturas().add(facturas.get(2));
+
         return facturas;
     }
+
+
 }

@@ -11,40 +11,41 @@ import mainPackage.util.ProductStorage;
 
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class Proveedor   {
     private int id;
     private String nombre;
     private int cuit;
-    private Collection<Producto> productos;
-    private Collection<Factura> facturas= new ArrayList<>();
+    private List<Producto> productos=new ArrayList<>();
+    private List<Factura> facturas= new ArrayList<>();
     private String categoriaFiscal;
-    private Collection<String> cuentaCorriente;
+    private LocalDate inicioDeActividades;
+    private Collection<String> cuentaCorriente=new ArrayList<>();;
     private static Proveedor INSTANCE = null;
     private ProductStorage productoDAO;
-    public Proveedor(int id, String name, int cuit, String categoriaFiscal, Collection<String> cuentaCorriente, Collection<Producto> productos) throws Exception {
+    public Proveedor(int id, String name, int cuit, String categoriaFiscal, Collection<String> cuentaCorriente, List<Producto> productos,LocalDate inicioDeActividades) throws Exception {
         this.id = id;
         this.nombre = name;
         this.cuit = cuit;
         this.categoriaFiscal = categoriaFiscal;
         this.cuentaCorriente = cuentaCorriente;
         this.productos = productos;
+        this.inicioDeActividades = inicioDeActividades;
     }
 
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         this.id = id;
     }
-
     public String getNombre() {
         return nombre;
     }
-
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
@@ -54,19 +55,19 @@ public class Proveedor   {
     public void setCuit(int cuit) {
         this.cuit = cuit;
     }
-
-    public Collection<Producto> getProductos()  {
+    public List<Producto> getProductos()  {
         return productos;
     }
-    public void setProductos(Collection<Producto> productos) {
+    public void setProductos(List<Producto> productos) {
         this.productos = productos;
     }
-
-    public Collection<Factura> getFacturas() {
+    public void addProducto(Producto producto) {
+        productos.add(producto);
+    }
+    public List<Factura> getFacturas() {
         return facturas;
     }
-
-    public void setFacturas(Collection<Factura> facturas) {
+    public void setFacturas(List<Factura> facturas) {
         this.facturas = facturas;
     }
     public void addFactura(Factura factura) {
@@ -86,6 +87,12 @@ public class Proveedor   {
 
     public void setCuentaCorriente(Collection<String> cuentaCorriente) {
         this.cuentaCorriente = cuentaCorriente;
+    }
+    public LocalDate getInicioDeActividades() {
+        return inicioDeActividades;
+    }
+    public void setInicioDeActividades(LocalDate inicioDeActividades) {
+        this.inicioDeActividades = inicioDeActividades;
     }
     public String toString() {
         return "{" +
