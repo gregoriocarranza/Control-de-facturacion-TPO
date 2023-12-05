@@ -31,7 +31,7 @@ public class ProductoDTO {
                 ", tipoDeUnidad=" + tipoDeUnidad +
                 ", precio=" + precio +
                 ", tipoDeIVA=" + tipoDeIVA +
-                ", Rubro='" + rubro + '\'' +
+                ", Rubro='" + rubro +
                 '}';
     }
 }

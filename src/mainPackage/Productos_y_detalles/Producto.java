@@ -16,8 +16,13 @@ public class Producto  {
     private TipoDeIva tipoDeIVA;
     private Rubro rubro;
 
-    public Producto() throws IOException {
-
+    public Producto(int id, String name,TipoDeUnidad tipoDeUnidad,float precio,TipoDeIva tipoDeIVA,Rubro rubro) throws IOException {
+        this.id= id;
+        this.nombre= name;
+        this.tipoDeUnidad=tipoDeUnidad ;
+        this.precio=precio;
+        this.tipoDeIVA=tipoDeIVA;
+        this.rubro=rubro;
     }
 
     public int getId() {
@@ -35,8 +40,6 @@ public class Producto  {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
-
 
     public TipoDeUnidad getTipoDeUnidad() {
         return tipoDeUnidad;
@@ -68,6 +71,17 @@ public class Producto  {
 
     public void setRubro(Rubro rubro) {
         this.rubro = rubro;
+    }
+
+    public String toString() {
+        return "{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", tipoDeUnidad=" + tipoDeUnidad +
+                ", precio=" + precio +
+                ", tipoDeIVA=" + tipoDeIVA +
+                ", Rubro='" + rubro +
+                '}';
     }
 
 }
