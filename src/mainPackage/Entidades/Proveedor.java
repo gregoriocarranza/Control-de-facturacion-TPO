@@ -3,6 +3,7 @@ package mainPackage.Entidades;
 import mainPackage.DTOS.ProductoDTO;
 
 import mainPackage.Documentos.Factura;
+import mainPackage.Enum.CategoriaFiscal;
 import mainPackage.Enum.TipoDeIva;
 import mainPackage.Enum.TipoDeUnidad;
 import mainPackage.Productos_y_detalles.Producto;
@@ -22,12 +23,12 @@ public class Proveedor   {
     private int cuit;
     private List<Producto> productos=new ArrayList<>();
     private List<Factura> facturas= new ArrayList<>();
-    private String categoriaFiscal;
+    private CategoriaFiscal categoriaFiscal;
     private LocalDate inicioDeActividades;
     private Collection<String> cuentaCorriente=new ArrayList<>();;
     private static Proveedor INSTANCE = null;
     private ProductStorage productoDAO;
-    public Proveedor(int id, String name, int cuit, String categoriaFiscal, Collection<String> cuentaCorriente, List<Producto> productos,LocalDate inicioDeActividades) throws Exception {
+    public Proveedor(int id, String name, int cuit, CategoriaFiscal categoriaFiscal, Collection<String> cuentaCorriente, List<Producto> productos, LocalDate inicioDeActividades) throws Exception {
         this.id = id;
         this.nombre = name;
         this.cuit = cuit;
@@ -73,11 +74,11 @@ public class Proveedor   {
     public void addFactura(Factura factura) {
         facturas.add(factura);
     }
-    public String getCategoriaFiscal() {
+    public CategoriaFiscal getCategoriaFiscal() {
         return categoriaFiscal;
     }
 
-    public void setCategoriaFiscal(String categoriaFiscal) {
+    public void setCategoriaFiscal(CategoriaFiscal categoriaFiscal) {
         this.categoriaFiscal = categoriaFiscal;
     }
 

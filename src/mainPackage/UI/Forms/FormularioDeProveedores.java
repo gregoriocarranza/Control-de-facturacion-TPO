@@ -1,5 +1,7 @@
 package mainPackage.UI.Forms;
 import mainPackage.Controller_P.Controller;
+import mainPackage.Enum.CategoriaFiscal;
+import mainPackage.Enum.TipoDeUnidad;
 import mainPackage.UI.MainMenu;
 
 import javax.swing.*;
@@ -13,7 +15,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class FormularioDeProveedores extends JFrame implements ActionListener {
-    private JTextField nombreField, cuitField, categoriaFiscalField, cuentaCorrienteField, inicioActividadesField;
+    private JTextField nombreField, cuitField, cuentaCorrienteField, inicioActividadesField;
+    private JComboBox<CategoriaFiscal> tipoDecategoriaFiscal;
     private JButton guardarButton, cancelarButton;
     private MainMenu mainMenu;
     private Controller controller;
@@ -39,8 +42,8 @@ public class FormularioDeProveedores extends JFrame implements ActionListener {
         formPanel.add(cuitField);
 
         formPanel.add(new JLabel("Categoría Fiscal:"));
-        categoriaFiscalField = new JTextField(10);
-        formPanel.add(categoriaFiscalField);
+        tipoDecategoriaFiscal = new JComboBox<>(CategoriaFiscal.values());
+        formPanel.add(tipoDecategoriaFiscal);
 
         formPanel.add(new JLabel("Cuenta Corriente:"));
         cuentaCorrienteField = new JTextField(10);
@@ -67,7 +70,7 @@ public class FormularioDeProveedores extends JFrame implements ActionListener {
         try {
             String nombre = nombreField.getText();
             int cuit = Integer.parseInt(cuitField.getText());
-            String categoriaFiscal = categoriaFiscalField.getText();
+            CategoriaFiscal categoriaFiscal = (CategoriaFiscal) tipoDecategoriaFiscal.getSelectedItem();
             String cuentaCorriente = cuentaCorrienteField.getText();
             LocalDate inicioDeActividades = LocalDate.parse(inicioActividadesField.getText(),DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
@@ -86,7 +89,7 @@ public class FormularioDeProveedores extends JFrame implements ActionListener {
     private void clearForm() {
         nombreField.setText("");
         cuitField.setText("");
-        categoriaFiscalField.setText("");
+        tipoDecategoriaFiscal.setSelectedIndex(0);
         cuentaCorrienteField.setText("");
         inicioActividadesField.setText("");
     }

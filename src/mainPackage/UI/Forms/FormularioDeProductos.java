@@ -1,6 +1,7 @@
 package mainPackage.UI.Forms;
 
 import mainPackage.Controller_P.Controller;
+import mainPackage.Entidades.Proveedor;
 import mainPackage.Productos_y_detalles.Producto;
 import mainPackage.Productos_y_detalles.Rubro;
 import mainPackage.Enum.TipoDeIva;
@@ -14,10 +15,11 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public class FormularioDeProductos extends JFrame implements ActionListener {
-    private JTextField nombreField, precioField,cuitProveedor;
+    private JTextField nombreField, precioField;
     private JComboBox<TipoDeUnidad> tipoDeUnidadComboBox;
     private JComboBox<TipoDeIva> tipoDeIVAComboBox;
     private JComboBox<Rubro> rubroComboBox;
+    private JComboBox<Proveedor> ProveedorComboBox;
     private JButton guardarButton, cancelarButton;
     private MainMenu mainMenu;
     private Controller controller;
@@ -38,9 +40,9 @@ public class FormularioDeProductos extends JFrame implements ActionListener {
         nombreField = new JTextField(5);
         formPanel.add(nombreField);
 
-        formPanel.add(new JLabel("Cuit:"));
-        cuitProveedor = new JTextField(5);
-        formPanel.add(cuitProveedor);
+        formPanel.add(new JLabel("Proveedor:"));
+        ProveedorComboBox = new JComboBox<>(controller.getAllProveedores().toArray(new Proveedor[0]));
+        formPanel.add(ProveedorComboBox);
 
         formPanel.add(new JLabel("Precio:"));
         precioField = new JTextField(5);
@@ -71,14 +73,14 @@ public class FormularioDeProductos extends JFrame implements ActionListener {
 
     private void saveProducto() throws IOException {
         String nombre = nombreField.getText();
-        String cuit = cuitProveedor.getText();
+        Proveedor proveedor = (Proveedor) ProveedorComboBox.getSelectedItem();
         float precio = Float.parseFloat(precioField.getText());
         TipoDeUnidad tipoDeUnidad = (TipoDeUnidad) tipoDeUnidadComboBox.getSelectedItem();
         TipoDeIva tipoDeIVA = (TipoDeIva) tipoDeIVAComboBox.getSelectedItem();
         Rubro rubro = (Rubro) rubroComboBox.getSelectedItem();
 
 
-            boolean success = controller.createProducto(nombre, tipoDeUnidad, precio, tipoDeIVA, rubro,cuit);
+            boolean success = controller.createProducto(nombre, tipoDeUnidad, precio, tipoDeIVA, rubro,proveedor);
             if (!success){
                 JOptionPane.showMessageDialog(this, "Error al crear el producto.", "Error", JOptionPane.ERROR_MESSAGE);
             }else {

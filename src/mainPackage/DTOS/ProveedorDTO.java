@@ -1,5 +1,6 @@
 package mainPackage.DTOS;
 import mainPackage.Entidades.Proveedor;
+import mainPackage.Enum.CategoriaFiscal;
 import mainPackage.Productos_y_detalles.Producto;
 
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import java.util.Collection;
 public class ProveedorDTO {
     private int id;
     private String nombre;
-    private String categoriaFiscal;
+    private CategoriaFiscal categoriaFiscal;
     private Collection<String> cuentaCorriente;
     private Collection<ProductoDTO> productos;
 

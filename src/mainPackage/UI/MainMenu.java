@@ -178,6 +178,11 @@ public class MainMenu extends JFrame implements ActionListener {
                     OrdenesDePagoTable ordenesPagoTable = new OrdenesDePagoTable(command);
                     ordenesPagoTable.setVisible(true);
                     break;
+                case "Agregar Ordenes de pago":
+                    FormularioDeOrdenDePago formularioDeOrdenDePago = new FormularioDeOrdenDePago(command);
+                    formularioDeOrdenDePago.setVisible(true);
+                    break;
+
                 default:
                     JOptionPane.showMessageDialog(this, "Acción no reconocida: " + command,"Error", JOptionPane.ERROR_MESSAGE);
                     break;
